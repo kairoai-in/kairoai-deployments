@@ -1,0 +1,21 @@
+replicaCount: 1
+
+image:
+  repository: kairoai.azurecr.io/kairoai-api-gateway
+  tag: latest
+  pullPolicy: IfNotPresent
+
+service:
+  port: 8000
+  targetPort: 8000
+
+env:
+  ENVIRONMENT: dev
+  LOG_LEVEL: INFO
+
+resources: {}
+
+serviceAccount:
+  create: true
+  name: ""
+  annotations: {}

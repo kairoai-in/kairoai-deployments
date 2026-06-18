@@ -1,0 +1,10 @@
+fullnameOverride: kairoai-api-gateway
+
+image:
+  repository: kairoai.azurecr.io/kairoai-api-gateway
+  tag: dev
+
+env:
+  ENVIRONMENT: dev
+  LOG_LEVEL: INFO
+  REVIEW_ORCHESTRATOR_URL: http://kairoai-review-orchestrator:8000

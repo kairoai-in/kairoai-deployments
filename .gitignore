@@ -1,0 +1,4 @@
+*.tgz
+.helm/
+charts/*/charts/
+charts/*/tmpcharts/
