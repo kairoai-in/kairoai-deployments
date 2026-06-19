@@ -1,0 +1,35 @@
+fullnameOverride: kairoai-review-worker
+
+image:
+  repository: kairoai.azurecr.io/kairoai-review-orchestrator
+  tag: dev
+
+command:
+  - celery
+
+args:
+  - -A
+  - kairoai_review_orchestrator.tasks.celery_app.celery_app
+  - worker
+  - --loglevel=INFO
+
+service:
+  enabled: false
+
+probes:
+  enabled: false
+
+env:
+  ENVIRONMENT: dev
+  LOG_LEVEL: INFO
+  CELERY_RESULT_BACKEND: rpc://
+  GITHUB_SERVICE_URL: http://kairoai-github-service:8000
+  TERRAFORM_RUNNER_URL: http://kairoai-terraform-runner:8000
+
+secretEnv:
+  DATABASE_URL:
+    name: kairoai-runtime-secrets
+    key: database-url
+  CELERY_BROKER_URL:
+    name: kairoai-runtime-secrets
+    key: celery-broker-url

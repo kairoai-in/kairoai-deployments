@@ -26,4 +26,8 @@ Deploy KairoAI services into AKS using Helm.
 ```powershell
 helm lint charts/kairoai-service
 helm template kairoai-api-gateway charts/kairoai-service -f envs/dev/api-gateway.values.yaml
+helm template kairoai-github-service charts/kairoai-service -f envs/dev/github-service.values.yaml
+helm template kairoai-review-orchestrator charts/kairoai-service -f envs/dev/review-orchestrator.values.yaml
+helm template kairoai-terraform-runner charts/kairoai-service -f envs/dev/terraform-runner.values.yaml
+helm template kairoai-review-worker charts/kairoai-service -f envs/dev/review-worker.values.yaml
 ```

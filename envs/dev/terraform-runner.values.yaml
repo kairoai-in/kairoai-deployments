@@ -1,0 +1,19 @@
+fullnameOverride: kairoai-terraform-runner
+
+image:
+  repository: kairoai.azurecr.io/kairoai-terraform-runner
+  tag: dev
+
+env:
+  ENVIRONMENT: dev
+  LOG_LEVEL: INFO
+  GITHUB_API_BASE_URL: https://api.github.com
+  TERRAFORM_BINARY: terraform
+
+secretEnv:
+  GITHUB_APP_ID:
+    name: kairoai-runtime-secrets
+    key: github-app-id
+  GITHUB_APP_PRIVATE_KEY:
+    name: kairoai-runtime-secrets
+    key: github-app-private-key

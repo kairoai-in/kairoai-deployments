@@ -1,0 +1,21 @@
+fullnameOverride: kairoai-review-orchestrator
+
+image:
+  repository: kairoai.azurecr.io/kairoai-review-orchestrator
+  tag: dev
+
+env:
+  ENVIRONMENT: dev
+  LOG_LEVEL: INFO
+  CELERY_RESULT_BACKEND: rpc://
+  ENABLE_TASK_DISPATCH: "true"
+  GITHUB_SERVICE_URL: http://kairoai-github-service:8000
+  TERRAFORM_RUNNER_URL: http://kairoai-terraform-runner:8000
+
+secretEnv:
+  DATABASE_URL:
+    name: kairoai-runtime-secrets
+    key: database-url
+  CELERY_BROKER_URL:
+    name: kairoai-runtime-secrets
+    key: celery-broker-url

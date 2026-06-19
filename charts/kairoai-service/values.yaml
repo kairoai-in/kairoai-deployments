@@ -5,13 +5,29 @@ image:
   tag: latest
   pullPolicy: IfNotPresent
 
+command: []
+args: []
+
 service:
+  enabled: true
   port: 8000
   targetPort: 8000
 
 env:
   ENVIRONMENT: dev
   LOG_LEVEL: INFO
+
+secretEnv: {}
+
+envFrom: []
+
+probes:
+  enabled: true
+  path: /health
+  initialDelaySeconds: 10
+  periodSeconds: 10
+  timeoutSeconds: 2
+  failureThreshold: 3
 
 resources: {}
 
