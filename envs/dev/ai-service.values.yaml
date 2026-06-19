@@ -1,0 +1,24 @@
+fullnameOverride: kairoai-ai-service
+
+image:
+  repository: kairoai.azurecr.io/kairoai-ai-service
+  tag: dev
+
+env:
+  ENVIRONMENT: dev
+  LOG_LEVEL: INFO
+  AI_PROVIDER: azure_ai_foundry
+
+secretEnv:
+  AZURE_AI_FOUNDRY_ENDPOINT:
+    name: kairoai-runtime-secrets
+    key: azure-ai-foundry-endpoint
+  AZURE_AI_FOUNDRY_API_KEY:
+    name: kairoai-runtime-secrets
+    key: azure-ai-foundry-api-key
+  AZURE_AI_FOUNDRY_DEPLOYMENT:
+    name: kairoai-runtime-secrets
+    key: azure-ai-foundry-deployment
+  AZURE_AI_FOUNDRY_API_VERSION:
+    name: kairoai-runtime-secrets
+    key: azure-ai-foundry-api-version
