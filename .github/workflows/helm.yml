@@ -14,3 +14,9 @@ jobs:
       - uses: azure/setup-helm@v4
       - run: helm lint charts/kairoai-service
       - run: helm template kairoai-api-gateway charts/kairoai-service -f envs/dev/api-gateway.values.yaml
+      - run: helm template kairoai-github-service charts/kairoai-service -f envs/dev/github-service.values.yaml
+      - run: helm template kairoai-review-orchestrator charts/kairoai-service -f envs/dev/review-orchestrator.values.yaml
+      - run: helm template kairoai-terraform-runner charts/kairoai-service -f envs/dev/terraform-runner.values.yaml
+      - run: helm template kairoai-security-service charts/kairoai-service -f envs/dev/security-service.values.yaml
+      - run: helm template kairoai-ai-service charts/kairoai-service -f envs/dev/ai-service.values.yaml
+      - run: helm template kairoai-review-worker charts/kairoai-service -f envs/dev/review-worker.values.yaml

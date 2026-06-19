@@ -11,6 +11,8 @@ Deploy KairoAI services into AKS using Helm.
 - Application services deploy with Helm.
 - RabbitMQ is the planned broker for Celery workers.
 - PostgreSQL is not deployed as a pod for hosted environments; services use Azure Database for PostgreSQL Flexible Server from `kairoai-infra`.
+- API Gateway handles GitHub `pull_request` webhooks for PR review creation.
+- API Gateway handles default-branch GitHub `push` webhooks for repository security baseline refresh.
 
 ## Structure
 
@@ -33,3 +35,12 @@ helm template kairoai-security-service charts/kairoai-service -f envs/dev/securi
 helm template kairoai-ai-service charts/kairoai-service -f envs/dev/ai-service.values.yaml
 helm template kairoai-review-worker charts/kairoai-service -f envs/dev/review-worker.values.yaml
 ```
+
+## GitHub App Event Contract
+
+The deployed API Gateway must receive these GitHub App events:
+
+- `pull_request`: creates review jobs and runs the PR analysis flow.
+- `push`: refreshes default-branch security baselines when the repository default branch changes.
+
+Keep `GITHUB_WEBHOOK_SECRET` configured in the API Gateway deployment so both event types require `X-Hub-Signature-256` verification.
