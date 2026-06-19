@@ -1,10 +1,5 @@
 # RabbitMQ
 
-RabbitMQ is the planned broker for Celery-based async work.
+RabbitMQ is retained only as a local/compatibility option for the original Celery worker path.
 
-Early deployment options:
-
-- Add a RabbitMQ Helm dependency here.
-- Deploy a standalone RabbitMQ chart with environment-specific values.
-
-Hosted PostgreSQL should remain Azure Database for PostgreSQL Flexible Server, not a pod in AKS.
+Hosted Azure environments should use Azure Service Bus for review dispatch. Do not add a RabbitMQ dependency for AKS unless the Azure Service Bus direction changes again.

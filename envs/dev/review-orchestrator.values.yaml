@@ -7,8 +7,9 @@ image:
 env:
   ENVIRONMENT: dev
   LOG_LEVEL: INFO
-  CELERY_RESULT_BACKEND: rpc://
   ENABLE_TASK_DISPATCH: "true"
+  TASK_DISPATCH_PROVIDER: azure_service_bus
+  SERVICE_BUS_QUEUE_NAME: review-analysis
   GITHUB_SERVICE_URL: http://kairoai-github-service:8000
   TERRAFORM_RUNNER_URL: http://kairoai-terraform-runner:8000
   SECURITY_SERVICE_URL: http://kairoai-security-service:8000
@@ -18,6 +19,6 @@ secretEnv:
   DATABASE_URL:
     name: kairoai-runtime-secrets
     key: database-url
-  CELERY_BROKER_URL:
+  SERVICE_BUS_CONNECTION_STRING:
     name: kairoai-runtime-secrets
-    key: celery-broker-url
+    key: service-bus-connection-string

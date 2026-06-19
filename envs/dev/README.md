@@ -12,7 +12,7 @@ Required keys:
 - `github-app-id`
 - `github-app-private-key`
 - `database-url`
-- `celery-broker-url`
+- `service-bus-connection-string`
 - `azure-ai-foundry-endpoint`
 - `azure-ai-foundry-api-key`
 - `azure-ai-foundry-deployment`
@@ -57,11 +57,18 @@ review-worker -> terraform-runner -> security-service -> ai-service -> github-se
 api-gateway default-branch push -> review-orchestrator baseline -> security-service
 ```
 
+Hosted async dispatch uses Azure Service Bus:
+
+```text
+review-orchestrator -> Service Bus queue review-analysis -> review-worker
+```
+
 ## Deployment Readiness Notes
 
 - Use immutable image tags for AKS validation instead of leaving long-lived environments on `dev`.
 - Build jobs currently need access to private shared packages. Use GitHub Actions secrets for build-time package access, or move shared contracts to an internal package registry before production hardening.
 - Keep `GITHUB_WEBHOOK_SECRET`, `GITHUB_APP_ID`, and `GITHUB_APP_PRIVATE_KEY` sourced from Key Vault-backed Kubernetes secrets.
+- Review dispatch requires `SERVICE_BUS_CONNECTION_STRING` for the `review-analysis` queue.
 - Baseline refresh requires API Gateway, Review Orchestrator, Security Service, PostgreSQL, and GitHub App credentials to be available.
 
 ## Service Image Publishing Secrets
