@@ -89,3 +89,12 @@ Current dev ACR:
 - SKU: `Basic`
 - Admin user: disabled
 - CI push identity: service principal with `AcrPush` scoped to the registry
+
+Current dev Service Bus:
+
+- Namespace: `sb-kairoai-dev`
+- Resource group: `rg-kairoai-dev`
+- SKU: `Standard`
+- Queue: `review-analysis`
+- Queue authorization rule: `kairoai-review-dispatch` with `Send` and `Listen`
+- Runtime secret key: `service-bus-connection-string`
