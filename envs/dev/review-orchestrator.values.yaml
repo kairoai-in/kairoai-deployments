@@ -1,7 +1,7 @@
 fullnameOverride: kairoai-review-orchestrator
 
 image:
-  repository: kairoai.azurecr.io/kairoai-review-orchestrator
+  repository: acrkairoaidev.azurecr.io/kairoai-review-orchestrator
   tag: dev
 
 env:

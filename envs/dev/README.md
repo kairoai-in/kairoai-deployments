@@ -1,6 +1,6 @@
 # Dev Environment
 
-Dev values target AKS using Azure Container Registry images.
+Dev values target AKS using Azure Container Registry images from `acrkairoaidev.azurecr.io`.
 
 ## Runtime Secret Contract
 
@@ -74,3 +74,11 @@ Each active service repository should define these GitHub Actions secrets before
 - `KAIROAI_PACKAGE_READ_TOKEN` if private cross-repository package installs need more access than the default `GITHUB_TOKEN`.
 
 The service workflows publish both immutable `${GITHUB_SHA}` tags and a moving `dev` tag to ACR on pushes to `main`.
+
+Current dev ACR:
+
+- Registry: `acrkairoaidev.azurecr.io`
+- Resource group: `rg-kairoai-dev`
+- SKU: `Basic`
+- Admin user: disabled
+- CI push identity: service principal with `AcrPush` scoped to the registry

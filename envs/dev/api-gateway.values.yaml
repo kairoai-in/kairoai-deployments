@@ -1,7 +1,7 @@
 fullnameOverride: kairoai-api-gateway
 
 image:
-  repository: kairoai.azurecr.io/kairoai-api-gateway
+  repository: acrkairoaidev.azurecr.io/kairoai-api-gateway
   tag: dev
 
 env:
