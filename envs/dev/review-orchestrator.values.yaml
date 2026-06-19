@@ -11,6 +11,7 @@ env:
   ENABLE_TASK_DISPATCH: "true"
   GITHUB_SERVICE_URL: http://kairoai-github-service:8000
   TERRAFORM_RUNNER_URL: http://kairoai-terraform-runner:8000
+  SECURITY_SERVICE_URL: http://kairoai-security-service:8000
 
 secretEnv:
   DATABASE_URL:

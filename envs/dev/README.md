@@ -25,6 +25,7 @@ helm upgrade --install kairoai-api-gateway ../../charts/kairoai-service -f api-g
 helm upgrade --install kairoai-github-service ../../charts/kairoai-service -f github-service.values.yaml
 helm upgrade --install kairoai-review-orchestrator ../../charts/kairoai-service -f review-orchestrator.values.yaml
 helm upgrade --install kairoai-terraform-runner ../../charts/kairoai-service -f terraform-runner.values.yaml
+helm upgrade --install kairoai-security-service ../../charts/kairoai-service -f security-service.values.yaml
 helm upgrade --install kairoai-review-worker ../../charts/kairoai-service -f review-worker.values.yaml
 ```
 
@@ -32,5 +33,5 @@ The active review flow is:
 
 ```text
 api-gateway -> review-orchestrator -> github-service
-review-worker -> terraform-runner -> github-service
+review-worker -> terraform-runner -> security-service -> github-service
 ```
