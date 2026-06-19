@@ -44,3 +44,9 @@ The deployed API Gateway must receive these GitHub App events:
 - `push`: refreshes default-branch security baselines when the repository default branch changes.
 
 Keep `GITHUB_WEBHOOK_SECRET` configured in the API Gateway deployment so both event types require `X-Hub-Signature-256` verification.
+
+## Runtime Secrets
+
+Dev AKS values expect a Kubernetes secret named `kairoai-runtime-secrets`.
+
+Use `envs/dev/runtime-secrets.example.env` as the non-secret key list and `scripts/create-dev-runtime-secret.ps1` to create or update the secret for dev validation.

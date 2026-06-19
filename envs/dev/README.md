@@ -20,6 +20,25 @@ Required keys:
 
 In Azure-hosted environments, this secret should be sourced from Azure Key Vault through External Secrets or CSI Secrets Store.
 
+For the current dev AKS validation path, create the secret directly from local environment variables:
+
+```powershell
+$env:GITHUB_WEBHOOK_SECRET = "<from-platform-env-local>"
+$env:GITHUB_APP_ID = "<github-app-id>"
+$env:GITHUB_APP_PRIVATE_KEY_PATH = "C:\path\to\github-app.private-key.pem"
+$env:DATABASE_URL = "<azure-postgresql-connection-string>"
+
+# Optional for now because AI Service has deterministic fallback behavior.
+$env:AZURE_AI_FOUNDRY_ENDPOINT = ""
+$env:AZURE_AI_FOUNDRY_API_KEY = ""
+$env:AZURE_AI_FOUNDRY_DEPLOYMENT = ""
+$env:AZURE_AI_FOUNDRY_API_VERSION = ""
+
+..\..\scripts\create-dev-runtime-secret.ps1 -Namespace kairoai
+```
+
+If `SERVICE_BUS_CONNECTION_STRING` is not set, the script reads the queue-scoped connection string from Azure for `sb-kairoai-dev/review-analysis`.
+
 ## GitHub App Runtime Contract
 
 The GitHub App webhook URL for dev AKS should point to:
