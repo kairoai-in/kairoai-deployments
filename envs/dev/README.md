@@ -63,3 +63,14 @@ api-gateway default-branch push -> review-orchestrator baseline -> security-serv
 - Build jobs currently need access to private shared packages. Use GitHub Actions secrets for build-time package access, or move shared contracts to an internal package registry before production hardening.
 - Keep `GITHUB_WEBHOOK_SECRET`, `GITHUB_APP_ID`, and `GITHUB_APP_PRIVATE_KEY` sourced from Key Vault-backed Kubernetes secrets.
 - Baseline refresh requires API Gateway, Review Orchestrator, Security Service, PostgreSQL, and GitHub App credentials to be available.
+
+## Service Image Publishing Secrets
+
+Each active service repository should define these GitHub Actions secrets before relying on automatic image publishing:
+
+- `ACR_LOGIN_SERVER`
+- `ACR_USERNAME`
+- `ACR_PASSWORD`
+- `KAIROAI_PACKAGE_READ_TOKEN` if private cross-repository package installs need more access than the default `GITHUB_TOKEN`.
+
+The service workflows publish both immutable `${GITHUB_SHA}` tags and a moving `dev` tag to ACR on pushes to `main`.
