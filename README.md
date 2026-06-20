@@ -58,5 +58,13 @@ Hosted environments should expose public traffic through NGINX Ingress and cert-
 - `kairoai.in` routes to the dashboard.
 - `api.kairoai.in` routes to the API Gateway.
 - Certificates are requested from the `letsencrypt-prod` ClusterIssuer.
+- Dev ClusterIssuer manifest lives at `envs/dev/cluster-issuer.letsencrypt-prod.yaml`.
 - GitHub App callback URL should be `https://kairoai.in/api/auth/callback`.
 - GitHub webhook URL should be `https://api.kairoai.in/webhooks/github`.
+
+After installing ingress-nginx, point both GoDaddy A records to the ingress controller public IP before waiting for certificates:
+
+```text
+kairoai.in      A    <ingress-public-ip>
+api.kairoai.in  A    <ingress-public-ip>
+```
