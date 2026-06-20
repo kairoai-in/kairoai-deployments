@@ -32,6 +32,8 @@ helm template kairoai-github-service charts/kairoai-service -f envs/dev/github-s
 helm template kairoai-review-orchestrator charts/kairoai-service -f envs/dev/review-orchestrator.values.yaml
 helm template kairoai-terraform-runner charts/kairoai-service -f envs/dev/terraform-runner.values.yaml
 helm template kairoai-security-service charts/kairoai-service -f envs/dev/security-service.values.yaml
+helm template kairoai-cost-service charts/kairoai-service -f envs/dev/cost-service.values.yaml
+helm template kairoai-governance-service charts/kairoai-service -f envs/dev/governance-service.values.yaml
 helm template kairoai-ai-service charts/kairoai-service -f envs/dev/ai-service.values.yaml
 helm template kairoai-review-worker charts/kairoai-service -f envs/dev/review-worker.values.yaml
 ```
