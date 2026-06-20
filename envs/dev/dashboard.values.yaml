@@ -1,0 +1,24 @@
+fullnameOverride: kairoai-dashboard
+
+image:
+  repository: acrkairoaidev.azurecr.io/kairoai-dashboard
+  tag: dev
+  pullPolicy: Always
+
+env:
+  NEXT_PUBLIC_APP_ENV: dev
+  KAIROAI_API_BASE_URL: https://api.kairoai.in
+  PORT: "3000"
+
+service:
+  type: LoadBalancer
+  port: 80
+  targetPort: 3000
+
+probes:
+  enabled: true
+  path: /health
+  initialDelaySeconds: 15
+  periodSeconds: 10
+  timeoutSeconds: 3
+  failureThreshold: 3
