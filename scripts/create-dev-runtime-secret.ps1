@@ -72,6 +72,9 @@ try {
         --from-literal=azure-ai-foundry-api-key="$(Get-OptionalEnv 'AZURE_AI_FOUNDRY_API_KEY')" `
         --from-literal=azure-ai-foundry-deployment="$(Get-OptionalEnv 'AZURE_AI_FOUNDRY_DEPLOYMENT')" `
         --from-literal=azure-ai-foundry-api-version="$(Get-OptionalEnv 'AZURE_AI_FOUNDRY_API_VERSION')" `
+        --from-literal=github-app-client-id="$(Get-OptionalEnv 'GITHUB_APP_CLIENT_ID')" `
+        --from-literal=github-app-client-secret="$(Get-OptionalEnv 'GITHUB_APP_CLIENT_SECRET')" `
+        --from-literal=dashboard-auth-secret="$(Get-OptionalEnv 'DASHBOARD_AUTH_SECRET')" `
         --dry-run=client `
         -o yaml | kubectl apply -f -
 }

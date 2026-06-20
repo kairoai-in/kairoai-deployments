@@ -8,12 +8,42 @@ image:
 env:
   NEXT_PUBLIC_APP_ENV: dev
   KAIROAI_API_BASE_URL: https://api.kairoai.in
+  APP_BASE_URL: https://kairoai.in
+  GITHUB_APP_SLUG: kairoai-in
+  GITHUB_APP_INSTALL_URL: https://github.com/apps/kairoai-in/installations/new
   PORT: "3000"
 
+secretEnv:
+  GITHUB_APP_CLIENT_ID:
+    name: kairoai-runtime-secrets
+    key: github-app-client-id
+  GITHUB_APP_CLIENT_SECRET:
+    name: kairoai-runtime-secrets
+    key: github-app-client-secret
+  AUTH_SECRET:
+    name: kairoai-runtime-secrets
+    key: dashboard-auth-secret
+
 service:
-  type: LoadBalancer
+  type: ClusterIP
   port: 80
   targetPort: 3000
+
+ingress:
+  enabled: true
+  className: nginx
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+  hosts:
+    - host: kairoai.in
+      paths:
+        - path: /
+          pathType: Prefix
+  tls:
+    - secretName: kairoai-dashboard-tls
+      hosts:
+        - kairoai.in
 
 probes:
   enabled: true

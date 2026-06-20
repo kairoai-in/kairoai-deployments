@@ -14,6 +14,13 @@ service:
   port: 8000
   targetPort: 8000
 
+ingress:
+  enabled: false
+  className: nginx
+  annotations: {}
+  hosts: []
+  tls: []
+
 env:
   ENVIRONMENT: dev
   LOG_LEVEL: INFO

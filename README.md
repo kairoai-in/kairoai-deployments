@@ -50,3 +50,13 @@ Keep `GITHUB_WEBHOOK_SECRET` configured in the API Gateway deployment so both ev
 Dev AKS values expect a Kubernetes secret named `kairoai-runtime-secrets`.
 
 Use `envs/dev/runtime-secrets.example.env` as the non-secret key list and `scripts/create-dev-runtime-secret.ps1` to create or update the secret for dev validation.
+
+## TLS Direction
+
+Hosted environments should expose public traffic through NGINX Ingress and cert-manager instead of per-service LoadBalancers.
+
+- `kairoai.in` routes to the dashboard.
+- `api.kairoai.in` routes to the API Gateway.
+- Certificates are requested from the `letsencrypt-prod` ClusterIssuer.
+- GitHub App callback URL should be `https://kairoai.in/api/auth/callback`.
+- GitHub webhook URL should be `https://api.kairoai.in/webhooks/github`.

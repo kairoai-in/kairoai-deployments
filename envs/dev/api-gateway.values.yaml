@@ -16,6 +16,22 @@ secretEnv:
     key: github-webhook-secret
 
 service:
-  type: LoadBalancer
+  type: ClusterIP
   port: 80
   targetPort: 8000
+
+ingress:
+  enabled: true
+  className: nginx
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+  hosts:
+    - host: api.kairoai.in
+      paths:
+        - path: /
+          pathType: Prefix
+  tls:
+    - secretName: kairoai-api-gateway-tls
+      hosts:
+        - api.kairoai.in
