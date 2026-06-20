@@ -3,6 +3,7 @@ fullnameOverride: kairoai-review-orchestrator
 image:
   repository: acrkairoaidev.azurecr.io/kairoai-review-orchestrator
   tag: dev
+  pullPolicy: Always
 
 env:
   ENVIRONMENT: dev

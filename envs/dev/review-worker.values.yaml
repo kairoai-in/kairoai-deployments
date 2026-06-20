@@ -3,6 +3,7 @@ fullnameOverride: kairoai-review-worker
 image:
   repository: acrkairoaidev.azurecr.io/kairoai-review-orchestrator
   tag: dev
+  pullPolicy: Always
 
 command:
   - python
