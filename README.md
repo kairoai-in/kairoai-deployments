@@ -10,7 +10,7 @@ Deploy KairoAI services into AKS using Helm.
 
 - Application services deploy with Helm.
 - Azure Service Bus is the planned hosted broker for review workers.
-- PostgreSQL is not deployed as a pod for hosted environments; services use Azure Database for PostgreSQL Flexible Server from `kairoai-infra`.
+proceed - PostgreSQL is not deployed as a pod for hosted environments; services use Azure Database for PostgreSQL Flexible Server from `kairoai-infra`.
 - API Gateway handles GitHub `pull_request` webhooks for PR review creation.
 - API Gateway handles default-branch GitHub `push` webhooks for repository security baseline refresh.
 

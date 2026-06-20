@@ -10,6 +10,7 @@ args: []
 
 service:
   enabled: true
+  type: ClusterIP
   port: 8000
   targetPort: 8000
 

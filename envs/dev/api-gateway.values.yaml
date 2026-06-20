@@ -13,3 +13,8 @@ secretEnv:
   GITHUB_WEBHOOK_SECRET:
     name: kairoai-runtime-secrets
     key: github-webhook-secret
+
+service:
+  type: LoadBalancer
+  port: 80
+  targetPort: 8000
