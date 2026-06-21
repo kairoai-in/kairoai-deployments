@@ -5,6 +5,8 @@ on:
   push:
     branches:
       - main
+      - test
+      - prod
 
 jobs:
   validate:
@@ -12,11 +14,32 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: azure/setup-helm@v4
-      - run: helm lint charts/kairoai-service
-      - run: helm template kairoai-api-gateway charts/kairoai-service -f envs/dev/api-gateway.values.yaml
-      - run: helm template kairoai-github-service charts/kairoai-service -f envs/dev/github-service.values.yaml
-      - run: helm template kairoai-review-orchestrator charts/kairoai-service -f envs/dev/review-orchestrator.values.yaml
-      - run: helm template kairoai-terraform-runner charts/kairoai-service -f envs/dev/terraform-runner.values.yaml
-      - run: helm template kairoai-security-service charts/kairoai-service -f envs/dev/security-service.values.yaml
-      - run: helm template kairoai-ai-service charts/kairoai-service -f envs/dev/ai-service.values.yaml
-      - run: helm template kairoai-review-worker charts/kairoai-service -f envs/dev/review-worker.values.yaml
+
+      - name: Helm lint
+        run: helm lint charts/kairoai-service
+
+      - name: Render dev manifests
+        run: |
+          mkdir -p rendered
+          helm template kairoai-api-gateway charts/kairoai-service -f envs/dev/api-gateway.values.yaml > rendered/api-gateway.yaml
+          helm template kairoai-github-service charts/kairoai-service -f envs/dev/github-service.values.yaml > rendered/github-service.yaml
+          helm template kairoai-review-orchestrator charts/kairoai-service -f envs/dev/review-orchestrator.values.yaml > rendered/review-orchestrator.yaml
+          helm template kairoai-terraform-runner charts/kairoai-service -f envs/dev/terraform-runner.values.yaml > rendered/terraform-runner.yaml
+          helm template kairoai-security-service charts/kairoai-service -f envs/dev/security-service.values.yaml > rendered/security-service.yaml
+          helm template kairoai-ai-service charts/kairoai-service -f envs/dev/ai-service.values.yaml > rendered/ai-service.yaml
+          helm template kairoai-review-worker charts/kairoai-service -f envs/dev/review-worker.values.yaml > rendered/review-worker.yaml
+
+      - name: Install kubeconform
+        run: |
+          curl -sSL https://github.com/yannh/kubeconform/releases/download/v0.6.7/kubeconform-linux-amd64.tar.gz -o kubeconform.tar.gz
+          tar -xzf kubeconform.tar.gz kubeconform
+          sudo mv kubeconform /usr/local/bin/kubeconform
+
+      - name: Kubernetes schema check
+        run: kubeconform -strict -summary rendered
+
+      - name: Kubernetes policy check report
+        run: |
+          python -m pip install --upgrade pip
+          pip install checkov
+          checkov -d rendered --framework kubernetes --quiet --soft-fail

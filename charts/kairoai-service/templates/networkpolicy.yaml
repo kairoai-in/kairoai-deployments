@@ -1,0 +1,42 @@
+{{- if .Values.networkPolicy.enabled -}}
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: {{ include "kairoai-service.fullname" . }}
+  labels:
+    app.kubernetes.io/name: {{ include "kairoai-service.name" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/name: {{ include "kairoai-service.name" . }}
+      app.kubernetes.io/instance: {{ .Release.Name }}
+  policyTypes:
+    - Ingress
+    {{- if .Values.networkPolicy.egress.enabled }}
+    - Egress
+    {{- end }}
+  ingress:
+    - {{- with .Values.networkPolicy.ingress.from }}
+      from:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      ports:
+        {{- if .Values.networkPolicy.ingress.ports }}
+        {{- toYaml .Values.networkPolicy.ingress.ports | nindent 8 }}
+        {{- else }}
+        - protocol: TCP
+          port: {{ .Values.service.targetPort }}
+        {{- end }}
+  {{- if .Values.networkPolicy.egress.enabled }}
+  egress:
+    - {{- with .Values.networkPolicy.egress.to }}
+      to:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.networkPolicy.egress.ports }}
+      ports:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+  {{- end }}
+{{- end -}}

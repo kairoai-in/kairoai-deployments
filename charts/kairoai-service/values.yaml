@@ -43,3 +43,13 @@ serviceAccount:
   create: true
   name: ""
   annotations: {}
+
+networkPolicy:
+  enabled: false
+  ingress:
+    from: []
+    ports: []
+  egress:
+    enabled: false
+    to: []
+    ports: []
