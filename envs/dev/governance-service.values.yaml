@@ -1,19 +1,15 @@
 fullnameOverride: kairoai-governance-service
-
 image:
   repository: acrkairoaidev.azurecr.io/kairoai-governance-service
-  tag: dev
+  tag: 2cfaade
   pullPolicy: Always
-
 env:
   ENVIRONMENT: dev
   LOG_LEVEL: INFO
-
 service:
   type: ClusterIP
   port: 8000
   targetPort: 8000
-
 probes:
   enabled: true
   path: /health
