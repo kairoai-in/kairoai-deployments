@@ -1,10 +1,8 @@
 fullnameOverride: kairoai-dashboard
-
 image:
   repository: acrkairoaidev.azurecr.io/kairoai-dashboard
-  tag: dev
+  tag: a200939
   pullPolicy: Always
-
 env:
   NEXT_PUBLIC_APP_ENV: dev
   KAIROAI_API_BASE_URL: https://api.kairoai.in
@@ -14,7 +12,6 @@ env:
   GITHUB_APP_SLUG: kairoai-in
   GITHUB_APP_INSTALL_URL: https://github.com/apps/kairoai-in/installations/new
   PORT: "3000"
-
 secretEnv:
   GITHUB_APP_CLIENT_ID:
     name: kairoai-runtime-secrets
@@ -25,12 +22,10 @@ secretEnv:
   AUTH_SECRET:
     name: kairoai-runtime-secrets
     key: dashboard-auth-secret
-
 service:
   type: ClusterIP
   port: 80
   targetPort: 3000
-
 ingress:
   enabled: true
   className: nginx
@@ -46,7 +41,6 @@ ingress:
     - secretName: kairoai-dashboard-tls
       hosts:
         - kairoai.in
-
 probes:
   enabled: true
   path: /health
