@@ -9,6 +9,7 @@ env:
   NEXT_PUBLIC_APP_ENV: dev
   KAIROAI_API_BASE_URL: https://api.kairoai.in
   KAIROAI_DASHBOARD_API_BASE_URL: http://kairoai-review-orchestrator:8000
+  KAIROAI_DASHBOARD_REVALIDATE_SECONDS: "15"
   APP_BASE_URL: https://kairoai.in
   GITHUB_APP_SLUG: kairoai-in
   GITHUB_APP_INSTALL_URL: https://github.com/apps/kairoai-in/installations/new
