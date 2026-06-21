@@ -1,17 +1,14 @@
 fullnameOverride: kairoai-ai-service
-
 image:
   repository: acrkairoaidev.azurecr.io/kairoai-ai-service
-  tag: dev
+  tag: 74a48b9
   pullPolicy: Always
-
 env:
   ENVIRONMENT: dev
   LOG_LEVEL: INFO
   AI_PROVIDER: azure_ai_foundry
   AZURE_AI_FOUNDRY_FALLBACK_DEPLOYMENTS: gpt-5.1,gpt-5
   AZURE_AI_FOUNDRY_TIMEOUT_SECONDS: "30"
-
 secretEnv:
   AZURE_AI_FOUNDRY_ENDPOINT:
     name: kairoai-runtime-secrets
