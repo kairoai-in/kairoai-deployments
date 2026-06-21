@@ -1,20 +1,16 @@
 fullnameOverride: kairoai-notification-service
-
 image:
   repository: acrkairoaidev.azurecr.io/kairoai-notification-service
-  tag: dev
+  tag: 044c992
   pullPolicy: Always
-
 env:
   ENVIRONMENT: dev
   LOG_LEVEL: INFO
   GITHUB_SERVICE_URL: http://kairoai-github-service:8000
-
 service:
   type: ClusterIP
   port: 8000
   targetPort: 8000
-
 probes:
   enabled: true
   path: /health
