@@ -1,15 +1,12 @@
 fullnameOverride: kairoai-github-service
-
 image:
   repository: acrkairoaidev.azurecr.io/kairoai-github-service
-  tag: dev
+  tag: 6eee904
   pullPolicy: Always
-
 env:
   ENVIRONMENT: dev
   LOG_LEVEL: INFO
   GITHUB_API_BASE_URL: https://api.github.com
-
 secretEnv:
   GITHUB_APP_ID:
     name: kairoai-runtime-secrets
