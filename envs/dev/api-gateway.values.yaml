@@ -1,25 +1,20 @@
 fullnameOverride: kairoai-api-gateway
-
 image:
   repository: acrkairoaidev.azurecr.io/kairoai-api-gateway
-  tag: dev
+  tag: dfe0219
   pullPolicy: Always
-
 env:
   ENVIRONMENT: dev
   LOG_LEVEL: INFO
   REVIEW_ORCHESTRATOR_URL: http://kairoai-review-orchestrator:8000
-
 secretEnv:
   GITHUB_WEBHOOK_SECRET:
     name: kairoai-runtime-secrets
     key: github-webhook-secret
-
 service:
   type: ClusterIP
   port: 80
   targetPort: 8000
-
 ingress:
   enabled: true
   className: nginx
