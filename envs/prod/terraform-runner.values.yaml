@@ -1,0 +1,29 @@
+fullnameOverride: kairoai-terraform-runner
+replicaCount: 2
+
+image:
+  repository: acrkairoaihubci.azurecr.io/kairoai-terraform-runner
+  tag: 96c2f67d396f
+  pullPolicy: IfNotPresent
+
+env:
+  ENVIRONMENT: prod
+  LOG_LEVEL: INFO
+  GITHUB_API_BASE_URL: https://api.github.com
+  TERRAFORM_BINARY: terraform
+
+secretEnv:
+  GITHUB_APP_ID:
+    name: kairoai-runtime-secrets
+    key: github-app-id
+  GITHUB_APP_PRIVATE_KEY:
+    name: kairoai-runtime-secrets
+    key: github-app-private-key
+
+resources:
+  requests:
+    cpu: 200m
+    memory: 256Mi
+  limits:
+    cpu: "1"
+    memory: 1Gi

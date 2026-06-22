@@ -1,0 +1,28 @@
+fullnameOverride: kairoai-github-service
+replicaCount: 2
+
+image:
+  repository: acrkairoaihubci.azurecr.io/kairoai-github-service
+  tag: 6eee90435333
+  pullPolicy: IfNotPresent
+
+env:
+  ENVIRONMENT: prod
+  LOG_LEVEL: INFO
+  GITHUB_API_BASE_URL: https://api.github.com
+
+secretEnv:
+  GITHUB_APP_ID:
+    name: kairoai-runtime-secrets
+    key: github-app-id
+  GITHUB_APP_PRIVATE_KEY:
+    name: kairoai-runtime-secrets
+    key: github-app-private-key
+
+resources:
+  requests:
+    cpu: 100m
+    memory: 128Mi
+  limits:
+    cpu: 500m
+    memory: 512Mi

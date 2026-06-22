@@ -1,0 +1,30 @@
+fullnameOverride: kairoai-security-service
+replicaCount: 2
+
+image:
+  repository: acrkairoaihubci.azurecr.io/kairoai-security-service
+  tag: 7ede8d88c742
+  pullPolicy: IfNotPresent
+
+env:
+  ENVIRONMENT: prod
+  LOG_LEVEL: INFO
+  GITHUB_API_BASE_URL: https://api.github.com
+  SECURITY_SCANNERS: checkov
+  CHECKOV_BINARY: checkov
+
+secretEnv:
+  GITHUB_APP_ID:
+    name: kairoai-runtime-secrets
+    key: github-app-id
+  GITHUB_APP_PRIVATE_KEY:
+    name: kairoai-runtime-secrets
+    key: github-app-private-key
+
+resources:
+  requests:
+    cpu: 250m
+    memory: 512Mi
+  limits:
+    cpu: "1"
+    memory: 1Gi

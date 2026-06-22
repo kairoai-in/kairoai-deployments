@@ -1,0 +1,36 @@
+fullnameOverride: kairoai-ai-service
+replicaCount: 2
+
+image:
+  repository: acrkairoaihubci.azurecr.io/kairoai-ai-service
+  tag: b1787d55335c
+  pullPolicy: IfNotPresent
+
+env:
+  ENVIRONMENT: prod
+  LOG_LEVEL: INFO
+  AI_PROVIDER: azure_ai_foundry
+  AZURE_AI_FOUNDRY_FALLBACK_DEPLOYMENTS: gpt-5.1,gpt-5
+  AZURE_AI_FOUNDRY_TIMEOUT_SECONDS: "30"
+
+secretEnv:
+  AZURE_AI_FOUNDRY_ENDPOINT:
+    name: kairoai-runtime-secrets
+    key: azure-ai-foundry-endpoint
+  AZURE_AI_FOUNDRY_API_KEY:
+    name: kairoai-runtime-secrets
+    key: azure-ai-foundry-api-key
+  AZURE_AI_FOUNDRY_DEPLOYMENT:
+    name: kairoai-runtime-secrets
+    key: azure-ai-foundry-deployment
+  AZURE_AI_FOUNDRY_API_VERSION:
+    name: kairoai-runtime-secrets
+    key: azure-ai-foundry-api-version
+
+resources:
+  requests:
+    cpu: 100m
+    memory: 256Mi
+  limits:
+    cpu: 500m
+    memory: 512Mi

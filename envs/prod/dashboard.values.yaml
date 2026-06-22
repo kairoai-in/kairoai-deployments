@@ -1,0 +1,62 @@
+fullnameOverride: kairoai-dashboard
+replicaCount: 2
+
+image:
+  repository: acrkairoaihubci.azurecr.io/kairoai-dashboard
+  tag: a200939bf9fc
+  pullPolicy: IfNotPresent
+
+env:
+  NEXT_PUBLIC_APP_ENV: prod
+  KAIROAI_API_BASE_URL: https://api.kairoai.in
+  KAIROAI_DASHBOARD_API_BASE_URL: http://kairoai-review-orchestrator:8000
+  KAIROAI_DASHBOARD_REVALIDATE_SECONDS: "15"
+  APP_BASE_URL: https://kairoai.in
+  GITHUB_APP_SLUG: kairoai-in
+  GITHUB_APP_INSTALL_URL: https://github.com/apps/kairoai-in/installations/new
+  PORT: "3000"
+
+secretEnv:
+  GITHUB_APP_CLIENT_ID:
+    name: kairoai-runtime-secrets
+    key: github-app-client-id
+  GITHUB_APP_CLIENT_SECRET:
+    name: kairoai-runtime-secrets
+    key: github-app-client-secret
+  AUTH_SECRET:
+    name: kairoai-runtime-secrets
+    key: dashboard-auth-secret
+
+service:
+  type: ClusterIP
+  port: 80
+  targetPort: 3000
+
+ingress:
+  enabled: true
+  className: azure-application-gateway
+  annotations:
+    appgw.ingress.kubernetes.io/backend-protocol: http
+    appgw.ingress.kubernetes.io/health-probe-path: /health
+  hosts:
+    - host: kairoai.in
+      paths:
+        - path: /
+          pathType: Prefix
+  tls: []
+
+probes:
+  enabled: true
+  path: /health
+  initialDelaySeconds: 15
+  periodSeconds: 10
+  timeoutSeconds: 3
+  failureThreshold: 3
+
+resources:
+  requests:
+    cpu: 100m
+    memory: 256Mi
+  limits:
+    cpu: 500m
+    memory: 512Mi

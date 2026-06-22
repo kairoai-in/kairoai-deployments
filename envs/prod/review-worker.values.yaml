@@ -1,0 +1,48 @@
+fullnameOverride: kairoai-review-worker
+replicaCount: 2
+
+image:
+  repository: acrkairoaihubci.azurecr.io/kairoai-review-orchestrator
+  tag: f0c521fc5b6e
+  pullPolicy: IfNotPresent
+
+command:
+  - python
+
+args:
+  - -m
+  - kairoai_review_orchestrator.tasks.service_bus_worker
+
+service:
+  enabled: false
+
+probes:
+  enabled: false
+
+env:
+  ENVIRONMENT: prod
+  LOG_LEVEL: INFO
+  TASK_DISPATCH_PROVIDER: azure_service_bus
+  SERVICE_BUS_QUEUE_NAME: review-analysis
+  GITHUB_SERVICE_URL: http://kairoai-github-service:8000
+  TERRAFORM_RUNNER_URL: http://kairoai-terraform-runner:8000
+  SECURITY_SERVICE_URL: http://kairoai-security-service:8000
+  COST_SERVICE_URL: http://kairoai-cost-service:8000
+  GOVERNANCE_SERVICE_URL: http://kairoai-governance-service:8000
+  AI_SERVICE_URL: http://kairoai-ai-service:8000
+
+secretEnv:
+  DATABASE_URL:
+    name: kairoai-runtime-secrets
+    key: database-url
+  SERVICE_BUS_CONNECTION_STRING:
+    name: kairoai-runtime-secrets
+    key: service-bus-connection-string
+
+resources:
+  requests:
+    cpu: 150m
+    memory: 256Mi
+  limits:
+    cpu: 750m
+    memory: 768Mi

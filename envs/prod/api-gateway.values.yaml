@@ -1,0 +1,43 @@
+fullnameOverride: kairoai-api-gateway
+replicaCount: 2
+
+image:
+  repository: acrkairoaihubci.azurecr.io/kairoai-api-gateway
+  tag: dfe02194e7ae
+  pullPolicy: IfNotPresent
+
+env:
+  ENVIRONMENT: prod
+  LOG_LEVEL: INFO
+  REVIEW_ORCHESTRATOR_URL: http://kairoai-review-orchestrator:8000
+
+secretEnv:
+  GITHUB_WEBHOOK_SECRET:
+    name: kairoai-runtime-secrets
+    key: github-webhook-secret
+
+service:
+  type: ClusterIP
+  port: 80
+  targetPort: 8000
+
+ingress:
+  enabled: true
+  className: azure-application-gateway
+  annotations:
+    appgw.ingress.kubernetes.io/backend-protocol: http
+    appgw.ingress.kubernetes.io/health-probe-path: /health
+  hosts:
+    - host: api.kairoai.in
+      paths:
+        - path: /
+          pathType: Prefix
+  tls: []
+
+resources:
+  requests:
+    cpu: 100m
+    memory: 128Mi
+  limits:
+    cpu: 500m
+    memory: 512Mi
