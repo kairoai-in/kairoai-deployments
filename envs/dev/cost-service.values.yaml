@@ -1,7 +1,7 @@
 fullnameOverride: kairoai-cost-service
 image:
   repository: acrkairoaidev.azurecr.io/kairoai-cost-service
-  tag: 630f29a
+  tag: 520bbbf
   pullPolicy: Always
 env:
   ENVIRONMENT: dev
