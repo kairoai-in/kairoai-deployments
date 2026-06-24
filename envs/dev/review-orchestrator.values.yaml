@@ -1,7 +1,7 @@
 fullnameOverride: kairoai-review-orchestrator
 image:
   repository: acrkairoaidev.azurecr.io/kairoai-review-orchestrator
-  tag: "1ea3e32"
+  tag: "db1ec40"
   pullPolicy: Always
 env:
   ENVIRONMENT: dev
