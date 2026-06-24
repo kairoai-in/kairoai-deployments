@@ -1,20 +1,16 @@
 fullnameOverride: kairoai-cost-service
 replicaCount: 2
-
 image:
   repository: acrkairoaihubci.azurecr.io/kairoai-cost-service
-  tag: 630f29aaadf0
+  tag: prod-v0.1.0
   pullPolicy: IfNotPresent
-
 env:
   ENVIRONMENT: prod
   LOG_LEVEL: INFO
-
 service:
   type: ClusterIP
   port: 8000
   targetPort: 8000
-
 resources:
   requests:
     cpu: 100m
