@@ -1,0 +1,6 @@
+data:
+  resource.customizations.health.networking.k8s.io_Ingress: |
+    hs = {}
+    hs.status = "Healthy"
+    hs.message = "Ingress is managed by Azure Application Gateway Ingress Controller; loadBalancer status can remain empty."
+    return hs

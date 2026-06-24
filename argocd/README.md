@@ -20,3 +20,8 @@ az aks command invoke `
   --command "kubectl apply -n argocd -f argocd/project.yaml; kubectl apply -n argocd -f argocd/apps"
 ```
 
+## AGIC Ingress Health
+
+Azure Application Gateway Ingress Controller can leave `status.loadBalancer` empty even when routing is healthy through Application Gateway/Front Door.
+The production cluster patches `argocd-cm` with an Ingress health customization so AGIC-managed ingress apps do not remain `Progressing` forever.
+
