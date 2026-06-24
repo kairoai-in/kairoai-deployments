@@ -1,20 +1,16 @@
 fullnameOverride: kairoai-governance-service
 replicaCount: 2
-
 image:
   repository: acrkairoaihubci.azurecr.io/kairoai-governance-service
-  tag: 2cfaadec0c72
+  tag: prod-v0.1.0
   pullPolicy: IfNotPresent
-
 env:
   ENVIRONMENT: prod
   LOG_LEVEL: INFO
-
 service:
   type: ClusterIP
   port: 8000
   targetPort: 8000
-
 resources:
   requests:
     cpu: 100m
