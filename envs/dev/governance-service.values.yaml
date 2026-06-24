@@ -1,7 +1,7 @@
 fullnameOverride: kairoai-governance-service
 image:
   repository: acrkairoaidev.azurecr.io/kairoai-governance-service
-  tag: 4b01b53
+  tag: bd78733
   pullPolicy: Always
 env:
   ENVIRONMENT: dev
