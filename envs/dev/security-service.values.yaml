@@ -1,7 +1,7 @@
 fullnameOverride: kairoai-security-service
 image:
   repository: acrkairoaidev.azurecr.io/kairoai-security-service
-  tag: b670802
+  tag: 79a0bbd
   pullPolicy: Always
 env:
   ENVIRONMENT: dev
