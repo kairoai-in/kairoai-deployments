@@ -1,0 +1,23 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: kairoai-governance-service
+  namespace: argocd
+spec:
+  project: kairoai-prod
+  source:
+    repoURL: https://github.com/kairoai-in/kairoai-deployments.git
+    targetRevision: prod
+    path: charts/kairoai-service
+    helm:
+      valueFiles:
+        - ../../envs/prod/governance-service.values.yaml
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: kairoai
+  syncPolicy:
+    automated:
+      prune: false
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
