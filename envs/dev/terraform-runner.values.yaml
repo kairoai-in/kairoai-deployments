@@ -1,7 +1,7 @@
 fullnameOverride: kairoai-terraform-runner
 image:
   repository: acrkairoaidev.azurecr.io/kairoai-terraform-runner
-  tag: 04b8988
+  tag: 8311a05
   pullPolicy: Always
 env:
   ENVIRONMENT: dev
