@@ -1,7 +1,7 @@
 fullnameOverride: kairoai-notification-service
 image:
   repository: acrkairoaidev.azurecr.io/kairoai-notification-service
-  tag: 044c992
+  tag: 3c69373
   pullPolicy: Always
 env:
   ENVIRONMENT: dev
