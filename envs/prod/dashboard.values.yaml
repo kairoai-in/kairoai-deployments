@@ -1,11 +1,9 @@
 fullnameOverride: kairoai-dashboard
 replicaCount: 2
-
 image:
   repository: acrkairoaihubci.azurecr.io/kairoai-dashboard
-  tag: a200939bf9fc
+  tag: prod-v0.1.0
   pullPolicy: IfNotPresent
-
 env:
   NEXT_PUBLIC_APP_ENV: prod
   KAIROAI_API_BASE_URL: https://api.kairoai.in
@@ -15,7 +13,6 @@ env:
   GITHUB_APP_SLUG: kairoai-in
   GITHUB_APP_INSTALL_URL: https://github.com/apps/kairoai-in/installations/new
   PORT: "3000"
-
 secretEnv:
   GITHUB_APP_CLIENT_ID:
     name: kairoai-runtime-secrets
@@ -26,12 +23,10 @@ secretEnv:
   AUTH_SECRET:
     name: kairoai-runtime-secrets
     key: dashboard-auth-secret
-
 service:
   type: ClusterIP
   port: 80
   targetPort: 3000
-
 ingress:
   enabled: true
   className: azure-application-gateway
@@ -44,7 +39,6 @@ ingress:
         - path: /
           pathType: Prefix
   tls: []
-
 probes:
   enabled: true
   path: /health
@@ -52,7 +46,6 @@ probes:
   periodSeconds: 10
   timeoutSeconds: 3
   failureThreshold: 3
-
 resources:
   requests:
     cpu: 100m
