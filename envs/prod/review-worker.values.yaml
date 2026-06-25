@@ -3,7 +3,7 @@ replicaCount: 2
 
 image:
   repository: acrkairoaihubci.azurecr.io/kairoai-review-orchestrator
-  tag: prod-v0.1.1
+  tag: prod-v0.1.2
   pullPolicy: IfNotPresent
 
 command:
