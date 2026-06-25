@@ -10,6 +10,7 @@ env:
   ENABLE_TASK_DISPATCH: "true"
   TASK_DISPATCH_PROVIDER: azure_service_bus
   SERVICE_BUS_QUEUE_NAME: review-analysis
+  SERVICE_BUS_MAX_LOCK_RENEWAL_SECONDS: "900"
   GITHUB_SERVICE_URL: http://kairoai-github-service:8000
   TERRAFORM_RUNNER_URL: http://kairoai-terraform-runner:8000
   SECURITY_SERVICE_URL: http://kairoai-security-service:8000
