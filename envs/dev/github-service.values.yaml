@@ -1,7 +1,7 @@
 fullnameOverride: kairoai-github-service
 image:
   repository: acrkairoaidev.azurecr.io/kairoai-github-service
-  tag: ed69896
+  tag: fdee9b7
   pullPolicy: Always
 env:
   ENVIRONMENT: dev
