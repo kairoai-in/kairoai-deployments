@@ -2,7 +2,7 @@ fullnameOverride: kairoai-github-service
 replicaCount: 2
 image:
   repository: acrkairoaihubci.azurecr.io/kairoai-github-service
-  tag: prod-v0.1.0
+  tag: prod-v0.1.1
   pullPolicy: IfNotPresent
 env:
   ENVIRONMENT: prod
