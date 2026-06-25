@@ -1,7 +1,7 @@
 fullnameOverride: kairoai-dashboard
 image:
   repository: acrkairoaidev.azurecr.io/kairoai-dashboard
-  tag: 8e43889
+  tag: dbf2ad1
   pullPolicy: Always
 env:
   NEXT_PUBLIC_APP_ENV: dev
