@@ -16,6 +16,9 @@ env:
   PORT: "3000"
 
 secretEnv:
+  GITHUB_APP_ID:
+    name: kairoai-runtime-secrets
+    key: github-app-id
   GITHUB_APP_CLIENT_ID:
     name: kairoai-runtime-secrets
     key: github-app-client-id
