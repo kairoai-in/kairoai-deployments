@@ -14,6 +14,9 @@ env:
   GITHUB_APP_INSTALL_URL: https://github.com/apps/kairoai-in/installations/new
   PORT: "3000"
 secretEnv:
+  GITHUB_APP_ID:
+    name: kairoai-runtime-secrets
+    key: github-app-id
   GITHUB_APP_CLIENT_ID:
     name: kairoai-runtime-secrets
     key: github-app-client-id
