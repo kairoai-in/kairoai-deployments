@@ -24,7 +24,7 @@ Run `.github/workflows/dast.yml` manually with:
 - `zap_scan_mode=baseline` for routine scans.
 - `zap_scan_mode=full` for deeper manual validation windows.
 
-The workflow uploads HTML, Markdown, and JSON reports per target.
+Targets run sequentially in dashboard, API, and Argo CD order. The workflow uploads one environment artifact containing separate HTML, Markdown, and JSON reports for each completed target.
 
 ## Gate
 

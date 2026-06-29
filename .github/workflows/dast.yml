@@ -79,48 +79,48 @@ jobs:
     name: ZAP Scan
     runs-on: ubuntu-latest
     needs: context
-    strategy:
-      fail-fast: true
-      matrix:
-        target: ${{ fromJson(needs.context.outputs.targets) }}
     steps:
       - uses: actions/checkout@v4
 
-      - name: Preflight target
+      - name: Run sequential OWASP ZAP scans
         shell: bash
+        env:
+          TARGETS: ${{ needs.context.outputs.targets }}
+          SCAN_MODE: ${{ needs.context.outputs.scan_mode }}
         run: |
           set -euo pipefail
-          curl --fail --silent --show-error --location --max-time 30 "${{ matrix.target.url }}" >/dev/null
 
-      - name: Run OWASP ZAP
-        shell: bash
-        run: |
-          set -euo pipefail
-          mkdir -p "dast-reports/${{ matrix.target.name }}"
-
-          if [[ "${{ needs.context.outputs.scan_mode }}" == "full" ]]; then
+          if [[ "$SCAN_MODE" == "full" ]]; then
             zap_command="zap-full-scan.py"
           else
             zap_command="zap-baseline.py"
           fi
 
-          docker run --rm \
-            --user root \
-            -v "$PWD/dast-reports/${{ matrix.target.name }}:/zap/wrk" \
-            "$ZAP_IMAGE" \
-            "$zap_command" \
-            -t "${{ matrix.target.url }}" \
-            -J "${{ matrix.target.name }}.json" \
-            -r "${{ matrix.target.name }}.html" \
-            -w "${{ matrix.target.name }}.md" \
-            -I
+          while IFS=$'\t' read -r name url; do
+            echo "::group::DAST $name"
+            mkdir -p "dast-reports/$name"
+            curl --fail --silent --show-error --location --max-time 30 "$url" >/dev/null
+
+            docker run --rm \
+              --user root \
+              -v "$PWD/dast-reports/$name:/zap/wrk" \
+              "$ZAP_IMAGE" \
+              "$zap_command" \
+              -t "$url" \
+              -J "$name.json" \
+              -r "$name.html" \
+              -w "$name.md" \
+              -I
+            echo "::endgroup::"
+          done < <(echo "$TARGETS" | jq -r '.[] | [.name, .url] | @tsv')
 
       - name: Upload DAST report
         uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: dast-${{ needs.context.outputs.target_environment }}-${{ matrix.target.name }}
-          path: dast-reports/${{ matrix.target.name }}
+          name: dast-${{ needs.context.outputs.target_environment }}
+          path: dast-reports
+          if-no-files-found: warn
 
   dast-summary:
     name: DAST Summary
