@@ -1,0 +1,140 @@
+name: DAST
+
+on:
+  workflow_dispatch:
+    inputs:
+      target_environment:
+        description: Environment to scan
+        required: true
+        default: test
+        type: choice
+        options:
+          - test
+          - prod
+      zap_scan_mode:
+        description: ZAP scan depth
+        required: true
+        default: baseline
+        type: choice
+        options:
+          - baseline
+          - full
+  schedule:
+    - cron: "30 2 * * *"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: dast-${{ github.event.inputs.target_environment || 'test' }}
+  cancel-in-progress: false
+
+env:
+  ZAP_IMAGE: ghcr.io/zaproxy/zaproxy:stable
+
+jobs:
+  context:
+    name: DAST Context
+    runs-on: ubuntu-latest
+    outputs:
+      target_environment: ${{ steps.context.outputs.target_environment }}
+      scan_mode: ${{ steps.context.outputs.scan_mode }}
+      targets: ${{ steps.context.outputs.targets }}
+    steps:
+      - name: Resolve scan targets
+        id: context
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          target_environment="${{ github.event.inputs.target_environment || 'test' }}"
+          scan_mode="${{ github.event.inputs.zap_scan_mode || 'baseline' }}"
+
+          case "$target_environment" in
+            test)
+              targets='[
+                {"name":"test-dashboard","url":"https://test.kairoai.in"},
+                {"name":"test-api","url":"https://test-api.kairoai.in/health"},
+                {"name":"test-argocd","url":"https://test-argocd.kairoai.in"}
+              ]'
+              ;;
+            prod)
+              targets='[
+                {"name":"prod-dashboard","url":"https://kairoai.in"},
+                {"name":"prod-api","url":"https://api.kairoai.in/health"},
+                {"name":"prod-argocd","url":"https://prod-argocd.kairoai.in"}
+              ]'
+              ;;
+            *)
+              echo "Unsupported target_environment: $target_environment" >&2
+              exit 1
+              ;;
+          esac
+
+          echo "target_environment=$target_environment" >> "$GITHUB_OUTPUT"
+          echo "scan_mode=$scan_mode" >> "$GITHUB_OUTPUT"
+          echo "targets=$(echo "$targets" | jq -c .)" >> "$GITHUB_OUTPUT"
+
+  zap-scan:
+    name: ZAP Scan
+    runs-on: ubuntu-latest
+    needs: context
+    strategy:
+      fail-fast: true
+      matrix:
+        target: ${{ fromJson(needs.context.outputs.targets) }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Preflight target
+        shell: bash
+        run: |
+          set -euo pipefail
+          curl --fail --silent --show-error --location --max-time 30 "${{ matrix.target.url }}" >/dev/null
+
+      - name: Run OWASP ZAP
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "dast-reports/${{ matrix.target.name }}"
+
+          if [[ "${{ needs.context.outputs.scan_mode }}" == "full" ]]; then
+            zap_command="zap-full-scan.py"
+          else
+            zap_command="zap-baseline.py"
+          fi
+
+          docker run --rm \
+            --user root \
+            -v "$PWD/dast-reports/${{ matrix.target.name }}:/zap/wrk" \
+            "$ZAP_IMAGE" \
+            "$zap_command" \
+            -t "${{ matrix.target.url }}" \
+            -J "${{ matrix.target.name }}.json" \
+            -r "${{ matrix.target.name }}.html" \
+            -w "${{ matrix.target.name }}.md" \
+            -I
+
+      - name: Upload DAST report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: dast-${{ needs.context.outputs.target_environment }}-${{ matrix.target.name }}
+          path: dast-reports/${{ matrix.target.name }}
+
+  dast-summary:
+    name: DAST Summary
+    runs-on: ubuntu-latest
+    needs:
+      - context
+      - zap-scan
+    if: always()
+    steps:
+      - name: Fail when any scan failed
+        if: ${{ needs.zap-scan.result != 'success' }}
+        run: |
+          echo "One or more DAST scans failed for ${{ needs.context.outputs.target_environment }}."
+          exit 1
+
+      - name: Report success
+        run: echo "DAST completed for ${{ needs.context.outputs.target_environment }}."
