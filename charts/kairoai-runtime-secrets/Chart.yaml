@@ -1,0 +1,6 @@
+apiVersion: v2
+name: kairoai-runtime-secrets
+description: Synchronizes KairoAI runtime secrets from Azure Key Vault
+type: application
+version: 0.1.0
+appVersion: "0.1.0"
