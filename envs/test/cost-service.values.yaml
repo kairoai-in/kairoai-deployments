@@ -1,0 +1,23 @@
+fullnameOverride: kairoai-cost-service
+
+image:
+  repository: acrkairoaihubci.azurecr.io/kairoai-cost-service
+  tag: dev
+  pullPolicy: Always
+
+env:
+  ENVIRONMENT: test
+  LOG_LEVEL: INFO
+
+service:
+  type: ClusterIP
+  port: 8000
+  targetPort: 8000
+
+probes:
+  enabled: true
+  path: /health
+  initialDelaySeconds: 10
+  periodSeconds: 10
+  timeoutSeconds: 3
+  failureThreshold: 3

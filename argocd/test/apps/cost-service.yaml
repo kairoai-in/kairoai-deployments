@@ -1,0 +1,20 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: kairoai-cost-service
+  namespace: argocd
+spec:
+  project: kairoai-test
+  source:
+    repoURL: https://github.com/kairoai-in/kairoai-deployments.git
+    targetRevision: test
+    path: charts/kairoai-service
+    helm:
+      valueFiles:
+        - ../../envs/test/cost-service.values.yaml
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: kairoai
+  syncPolicy:
+    syncOptions:
+      - CreateNamespace=true
