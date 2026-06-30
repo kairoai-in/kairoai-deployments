@@ -30,7 +30,41 @@ az aks command invoke `
   --command "kubectl apply -n argocd -f argocd/test/project.yaml; kubectl apply -n argocd -f argocd/test/apps"
 ```
 
-Production should be exposed only after test validates cleanly. Prod currently has existing ArgoCD application manifests, so do not enable a second Argo CD controller in prod without a controlled migration.
+Production keeps its existing Helm-managed Argo CD controller. Do not enable the Azure preview extension in prod without a controlled migration because that would create a second controller for the same applications.
+
+Expose the existing production controller through the approved edge path:
+
+`prod-argocd.kairoai.in -> Azure Front Door -> production Application Gateway WAF -> AGIC -> argocd-server`
+
+Because TLS terminates at Azure Front Door/Application Gateway, the backend Argo CD server must run in insecure HTTP mode. Otherwise Argo CD redirects HTTP back to HTTPS and the public URL loops forever.
+
+```powershell
+az aks command invoke `
+  --resource-group rg-kairoai-prod-ci `
+  --name aks-kairoai-prod-ci `
+  --subscription a8270be7-dabc-4d92-98db-26a55025b0df `
+  --file . `
+  --command "kubectl apply -f argocd/config/prod-cmd-params.yaml; kubectl rollout restart deployment/argocd-server -n argocd"
+```
+
+```powershell
+az aks command invoke `
+  --resource-group rg-kairoai-prod-ci `
+  --name aks-kairoai-prod-ci `
+  --subscription a8270be7-dabc-4d92-98db-26a55025b0df `
+  --file . `
+  --command "kubectl apply -f argocd/ingress/prod-argocd.yaml"
+```
+
+If the ApplicationSet controller reports that `applicationsets.argoproj.io` is missing, install the CRD matching the deployed Argo CD version. Server-side apply avoids the Kubernetes client-side annotation size limit:
+
+```powershell
+az aks command invoke `
+  --resource-group rg-kairoai-prod-ci `
+  --name aks-kairoai-prod-ci `
+  --subscription a8270be7-dabc-4d92-98db-26a55025b0df `
+  --command "kubectl apply --server-side -f https://raw.githubusercontent.com/argoproj/argo-cd/v3.4.4/manifests/crds/applicationset-crd.yaml"
+```
 
 ## Production Sync Model
 
